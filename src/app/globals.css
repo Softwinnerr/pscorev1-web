@@ -3,6 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* shadcn-style data-attribute variants — required by the Tabs and
+ * Popover components which reference `data-horizontal:`, `data-vertical:`
+ * and `data-active:` Tailwind selectors. Without these custom-variant
+ * declarations the variants silently no-op, which broke the Tabs root
+ * (it kept its default flex-row layout instead of stacking vertically).
+ */
+@custom-variant data-horizontal (&[data-orientation="horizontal"]);
+@custom-variant data-vertical (&[data-orientation="vertical"]);
+@custom-variant data-active (&[data-state="active"]);
+
 /* ------------------------------------------------------------------ */
 /* Design tokens — direct port of the Flutter `AppPalette` constants. */
 /* Light is the default; `.dark` on <html> swaps in the dark palette. */

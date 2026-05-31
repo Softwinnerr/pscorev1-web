@@ -59,8 +59,11 @@ export default function MatchDetailPage({
 
             {/* 2. Tabs row — centred between the header card and the
                    active tab's content. Scrolls horizontally on narrow
-                   widths so all four pills stay reachable. */}
-            <Tabs defaultValue="apercu" className="gap-6">
+                   widths so all four pills stay reachable. `flex-col` is
+                   set explicitly because shadcn's `data-horizontal:flex-col`
+                   variant relies on a custom Tailwind variant declared in
+                   globals.css ; we keep this override as a safety belt. */}
+            <Tabs defaultValue="apercu" className="flex-col gap-6">
               <TabsList
                 className={`
                   h-auto bg-transparent gap-2 overflow-x-auto flex w-full
