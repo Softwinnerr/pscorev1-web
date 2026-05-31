@@ -32,11 +32,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Hard-coding `dark` for now — mirrors the Flutter default until we
-    // wire a theme toggle. Drop the class to render the light palette.
+    // Light palette by default (matches the design wireframe). To opt in
+    // to the dark palette, add the `dark` class on this element or wire
+    // a runtime theme controller later.
     <html
       lang="fr"
-      className={cn("dark", dmSans.variable, jockeyOne.variable)}
+      // next-themes mutates this className at runtime (adds/removes
+      // `dark`) — suppress the React hydration mismatch warning for
+      // the html element only.
+      suppressHydrationWarning
+      className={cn(dmSans.variable, jockeyOne.variable)}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
         <Providers>{children}</Providers>
