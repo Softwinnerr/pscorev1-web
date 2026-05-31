@@ -1,26 +1,185 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — direct port of the Flutter `AppPalette` constants. */
+/* Light is the default; `.dark` on <html> swaps in the dark palette. */
+/*                                                                    */
+/* shadcn's semantic tokens (--background, --primary, --card, etc.)   */
+/* are remapped to alias our brand tokens so the generated components */
+/* pick up the Flutter look out of the box. Anything not used by      */
+/* shadcn (chart-*, sidebar-*) is left at neutral defaults.           */
+/* ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --brand-primary: #0a4d2e;
+  --brand-primary-dark: #073621;
+  --brand-live-red: #ff4757;
+
+  /* Surfaces */
+  --surface-background: #f2f2f7;
+  --surface-card: #ffffff;
+  --surface-chip: #ffffff;
+  --surface-chip-border: #e5e5ea;
+
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b70;
+  --text-muted: #b0b0b5;
+
+  /* Decoration */
+  --decoration-divider: #efeff2;
+  --decoration-shadow: rgb(0 0 0 / 0.1);
+
+  /* shadcn semantic tokens — aliased to brand tokens above. */
+  --background: var(--surface-background);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-card);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--brand-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-chip);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-chip);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--surface-chip);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--brand-live-red);
+  --border: var(--surface-chip-border);
+  --input: var(--surface-chip-border);
+  --ring: var(--brand-primary);
+  --radius: 0.625rem;
+
+  /* Sidebar/chart — neutral oklch defaults from shadcn; not used yet. */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: var(--surface-card);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--brand-primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--surface-chip);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--surface-chip-border);
+  --sidebar-ring: var(--brand-primary);
 }
 
+.dark {
+  --surface-background: #000000;
+  --surface-card: #1c1c1e;
+  --surface-chip: #2c2c2e;
+  --surface-chip-border: #3a3a3c;
+
+  --text-primary: #ffffff;
+  --text-secondary: #b2b2b7;
+  --text-muted: #6e6e73;
+
+  --decoration-divider: #2c2c2e;
+  --decoration-shadow: rgb(0 0 0 / 0.4);
+}
+
+/* ------------------------------------------------------------------ */
+/* Expose the tokens to Tailwind utilities                            */
+/* (so `bg-card`, `text-foreground`, `rounded-card` etc. all work)    */
+/* ------------------------------------------------------------------ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand */
+  --color-primary: var(--brand-primary);
+  --color-primary-dark: var(--brand-primary-dark);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-live-red: var(--brand-live-red);
+
+  /* Surfaces */
+  --color-background: var(--surface-background);
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-chip: var(--surface-chip);
+  --color-chip-border: var(--surface-chip-border);
+
+  /* Text */
+  --color-foreground: var(--text-primary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--text-secondary);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+
+  /* Decoration */
+  --color-divider: var(--decoration-divider);
+  --color-border: var(--surface-chip-border);
+  --color-input: var(--input);
+  --color-ring: var(--brand-primary);
+
+  /* Sidebar / chart — passthrough so shadcn utilities resolve. */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Radii — Flutter cards use 28, pills 20, date chips 12. */
+  --radius-card: 28px;
+  --radius-pill: 20px;
+  --radius-chip: 16px;
+  --radius-tag: 12px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  /* Fonts — injected via next/font in layout.tsx. */
+  --font-sans: var(--font-dm-sans), Arial, Helvetica, sans-serif;
+  --font-display: var(--font-jockey-one), var(--font-dm-sans), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ------------------------------------------------------------------ */
+/* Base styles                                                        */
+/* ------------------------------------------------------------------ */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface-background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  /* Slightly tighter letter-spacing on body, matches the Flutter
+     `_withLetterSpacing(-0.5)` global tweak. */
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display font — apply via the `font-display` Tailwind utility on
+   titles and number-heavy elements. Letter-spacing reset back to 0
+   so it doesn't inherit the body's negative tracking. */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+@layer base {
+  * {
+    border-color: var(--decoration-divider);
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
