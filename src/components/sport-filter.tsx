@@ -22,7 +22,7 @@ export function SportFilter({
   ];
 
   return (
-    <div className="scrollbar-none flex gap-2 overflow-x-auto px-4 pb-3 pt-1">
+    <div className="scrollbar-none flex gap-2 overflow-x-auto pb-3 pt-1">
       {options.map(({ label, code }) => {
         const active = selected === code;
         return (

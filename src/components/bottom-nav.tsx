@@ -6,9 +6,9 @@ import { Volleyball, Trophy, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Persistent bottom navigation — port of the Flutter `MainScaffold` tab
- * bar. Three top-level tabs (Matchs / Compétitions / Profil), each
- * mapped to a route under the App Router.
+ * Floating bottom navigation — mobile only (`md:hidden`). Direct port of
+ * the Flutter `MainScaffold` bottom bar. Tablets and desktops use the
+ * sticky `<TopNav />` instead.
  */
 const tabs = [
   { href: "/", label: "Matchs", icon: Volleyball },
@@ -23,11 +23,9 @@ export function BottomNav() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    // Floating glass-ish pill — Flutter uses LiquidGlass; web fallback
-    // is a frosted backdrop-blurred card with a subtle ring.
     <nav
       className={cn(
-        "fixed inset-x-0 bottom-4 z-50 mx-auto w-[min(420px,calc(100%-2rem))]",
+        "fixed inset-x-0 bottom-4 z-50 mx-auto w-[min(420px,calc(100%-2rem))] md:hidden",
         "rounded-pill border border-chip-border bg-card/85 backdrop-blur-xl",
         "shadow-[0_8px_24px_rgb(0_0_0/0.25)]",
       )}

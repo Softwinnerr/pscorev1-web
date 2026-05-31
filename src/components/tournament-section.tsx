@@ -16,7 +16,7 @@ export function TournamentSection({
   matches: MatchResponse[];
 }) {
   return (
-    <section className="mx-4 overflow-hidden rounded-card bg-card shadow-[0_2px_6px_var(--decoration-shadow)]">
+    <section className="overflow-hidden rounded-card bg-card shadow-[0_2px_6px_var(--decoration-shadow)]">
       <header className="flex items-center gap-3 px-4 py-3.5">
         <NetworkImage
           url={tournament?.logoPath}
