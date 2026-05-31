@@ -53,16 +53,18 @@ export default function MatchDetailPage({
         emptyIcon={Frown}
       >
         {data && (
-          <div className="flex flex-col gap-4 px-4 py-4 md:px-0 md:py-0">
+          <div className="flex flex-col gap-6 px-4 py-4 md:px-0 md:py-0">
+            {/* 1. Match summary card (score + teams + competition). */}
             <MatchHeader detail={data} />
 
-            <Tabs defaultValue="apercu" className="gap-3">
-              {/* Pill-style trigger row that mirrors the Flutter
-                  tab bar — scrolls horizontally on narrow widths. */}
+            {/* 2. Tabs row — centred between the header card and the
+                   active tab's content. Scrolls horizontally on narrow
+                   widths so all four pills stay reachable. */}
+            <Tabs defaultValue="apercu" className="gap-6">
               <TabsList
                 className={`
                   h-auto bg-transparent gap-2 overflow-x-auto flex w-full
-                  justify-start rounded-none p-0
+                  justify-center rounded-none p-0
                 `}
               >
                 <PillTrigger value="apercu">Aperçu</PillTrigger>
@@ -71,16 +73,18 @@ export default function MatchDetailPage({
                 <PillTrigger value="classement">Classement</PillTrigger>
               </TabsList>
 
-              <TabsContent value="apercu">
+              {/* 3. Active tab content. Each tab body returns its own
+                     cards, so we don't wrap them in an extra container. */}
+              <TabsContent value="apercu" className="mt-0">
                 <ApercuTab detail={data} />
               </TabsContent>
-              <TabsContent value="compositions">
+              <TabsContent value="compositions" className="mt-0">
                 <CompositionsTab detail={data} />
               </TabsContent>
-              <TabsContent value="statistiques">
+              <TabsContent value="statistiques" className="mt-0">
                 <StatistiquesTab detail={data} />
               </TabsContent>
-              <TabsContent value="classement">
+              <TabsContent value="classement" className="mt-0">
                 <ClassementTab detail={data} />
               </TabsContent>
             </Tabs>
