@@ -3,7 +3,8 @@ import type {
   SportResponse,
   TournamentDto,
 } from "@/types/models";
-import { apiGet } from "./api-client";
+import type { MatchDetail } from "@/types/match-detail";
+import { apiGet, ApiError } from "./api-client";
 import type { IMatchesService } from "./matches-service";
 
 /**
@@ -33,5 +34,19 @@ export class HttpMatchesService implements IMatchesService {
       params,
     );
     return res.data ?? [];
+  }
+
+  async getMatchDetail(matchId: number): Promise<MatchDetail | null> {
+    try {
+      const res = await apiGet<{ data: MatchDetail | null }>(
+        `/matches/${matchId}`,
+      );
+      return res.data ?? null;
+    } catch (e) {
+      // Treat 404 as "no detail row" rather than an error so the UI
+      // shows the empty state cleanly.
+      if (e instanceof ApiError && e.status === 404) return null;
+      throw e;
+    }
   }
 }

@@ -4,6 +4,12 @@ import type {
   TournamentDto,
   TeamResponse,
 } from "@/types/models";
+import type {
+  MatchDetail,
+  StandingRow,
+  MatchStatistic,
+  TeamLineup,
+} from "@/types/match-detail";
 import type { IMatchesService } from "./matches-service";
 
 // ── Sports ──────────────────────────────────────────────────────────────
@@ -281,4 +287,198 @@ export class MockMatchesService implements IMatchesService {
     }
     return all;
   }
+
+  async getMatchDetail(matchId: number): Promise<MatchDetail | null> {
+    await new Promise((r) => setTimeout(r, 180));
+    const match = matches().find((m) => m.id === matchId);
+    if (!match) return null;
+    return buildMatchDetail(match);
+  }
+}
+
+// ── MatchDetail builder ────────────────────────────────────────────────
+// Mirrors the Flutter `_buildMatchDetail` private helper — synthesises a
+// realistic detail object from the lightweight `MatchResponse`. The shape
+// matches what a real backend would return so the UI doesn't change when
+// we flip to HTTP on Sunday.
+
+function buildMatchDetail(match: MatchResponse): MatchDetail {
+  const homeName = match.homeTeam?.name ?? "Home";
+  const awayName = match.awayTeam?.name ?? "Away";
+
+  const scorers = [
+    {
+      playerName: "K. Yao",
+      minutes: [54, 56],
+      side: "home" as const,
+    },
+    {
+      playerName: "A. Coulibaly",
+      minutes: [77],
+      side: "home" as const,
+    },
+    {
+      playerName: "D. Souleymane",
+      minutes: [84],
+      side: "away" as const,
+    },
+  ];
+
+  const lineup = (coach: string, prefix: string): TeamLineup => ({
+    coachName: coach,
+    starters: [
+      { number: 1, name: `${prefix} Touré`, position: "Gardien" },
+      { number: 2, name: `${prefix} Bamba`, position: "Défenseur" },
+      { number: 4, name: `${prefix} Coulibaly`, position: "Défenseur" },
+      { number: 5, name: `${prefix} Diallo`, position: "Défenseur" },
+      { number: 6, name: `${prefix} Konan`, position: "Milieu" },
+      { number: 8, name: `${prefix} Soro`, position: "Milieu" },
+      { number: 10, name: `${prefix} Yao`, position: "Milieu" },
+      { number: 7, name: `${prefix} Kouassi`, position: "Attaquant" },
+      { number: 9, name: `${prefix} Traoré`, position: "Attaquant" },
+      { number: 11, name: `${prefix} N'Guessan`, position: "Attaquant" },
+      { number: 14, name: `${prefix} Diabaté`, position: "Attaquant" },
+    ],
+    substitutes: [
+      { number: 12, name: `${prefix} Yapi`, position: "Gardien" },
+      { number: 15, name: `${prefix} Brou`, position: "Défenseur" },
+      { number: 16, name: `${prefix} Ouattara`, position: "Milieu" },
+      { number: 17, name: `${prefix} Adjé`, position: "Attaquant" },
+    ],
+  });
+
+  const stats: MatchStatistic[] = [
+    { label: "Possession", homeValue: 58, awayValue: 42, isPercentage: true },
+    { label: "Tirs", homeValue: 12, awayValue: 7 },
+    { label: "Tirs cadrés", homeValue: 5, awayValue: 3 },
+    { label: "Corners", homeValue: 6, awayValue: 4 },
+    { label: "Fautes", homeValue: 9, awayValue: 14 },
+    {
+      label: "Précision passes",
+      homeValue: 87,
+      awayValue: 79,
+      isPercentage: true,
+    },
+    { label: "Cartons jaunes", homeValue: 1, awayValue: 3 },
+    { label: "Cartons rouges", homeValue: 0, awayValue: 1 },
+  ];
+
+  const standings: StandingRow[] = [
+    {
+      rank: 1,
+      teamName: "LYS Sassandra",
+      played: 18,
+      won: 12,
+      drawn: 3,
+      lost: 3,
+      goalsFor: 38,
+      goalsAgainst: 14,
+      points: 39,
+    },
+    {
+      rank: 2,
+      teamName: "ASEC Mimosas",
+      played: 18,
+      won: 11,
+      drawn: 4,
+      lost: 3,
+      goalsFor: 34,
+      goalsAgainst: 16,
+      points: 37,
+    },
+    {
+      rank: 3,
+      teamName: "AFAD Djékanou",
+      played: 18,
+      won: 10,
+      drawn: 4,
+      lost: 4,
+      goalsFor: 28,
+      goalsAgainst: 17,
+      points: 34,
+    },
+    {
+      rank: 4,
+      teamName: "USC Bassam",
+      played: 18,
+      won: 8,
+      drawn: 5,
+      lost: 5,
+      goalsFor: 24,
+      goalsAgainst: 20,
+      points: 29,
+    },
+    {
+      rank: 5,
+      teamName: "UFHB Cocody",
+      played: 18,
+      won: 7,
+      drawn: 4,
+      lost: 7,
+      goalsFor: 22,
+      goalsAgainst: 23,
+      points: 25,
+    },
+  ];
+
+  return {
+    match,
+    scorers,
+    events: [
+      { minute: 14, type: "goal", side: "home", playerName: "K. Yao" },
+      {
+        minute: 18,
+        type: "penaltyMissed",
+        side: "away",
+        playerName: "D. Souleymane",
+      },
+      {
+        minute: 28,
+        type: "goal",
+        side: "away",
+        playerName: "D. Souleymane",
+      },
+      { minute: 54, type: "goal", side: "home", playerName: "K. Yao" },
+      {
+        minute: 56,
+        type: "goal",
+        side: "home",
+        playerName: "A. Coulibaly",
+        secondaryPlayerName: "K. Yao",
+      },
+      {
+        minute: 78,
+        type: "substitution",
+        side: "home",
+        playerName: "B. Yacouba",
+        secondaryPlayerName: "T. Bakary",
+      },
+      { minute: 80, type: "redCard", side: "away", playerName: "S. Mahamadou" },
+      { minute: 82, type: "yellowCard", side: "home", playerName: "O. Daouda" },
+      {
+        minute: 84,
+        type: "goal",
+        side: "home",
+        playerName: "K. Yao",
+        secondaryPlayerName: "A. Coulibaly",
+      },
+    ],
+    odds: {
+      bookmaker: "AkwaBet",
+      home: 1.65,
+      draw: 3.4,
+      away: 4.8,
+    },
+    homeForm: ["win", "loss", "win", "win", "draw"],
+    awayForm: ["draw", "win", "win", "loss", "win"],
+    competition: match.tournament?.name ?? "Ligue 2 Ivoirienne",
+    startsAt: match.scheduleDate,
+    venue: "Stade municipal de Sassandra",
+    lineups: {
+      home: lineup("Yao Kouassi", homeName.charAt(0)),
+      away: lineup("Diomandé Mamadou", awayName.charAt(0)),
+    },
+    stats: { full: stats },
+    standings,
+  };
 }

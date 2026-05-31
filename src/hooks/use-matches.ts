@@ -7,6 +7,7 @@ import type {
   SportResponse,
   TournamentDto,
 } from "@/types/models";
+import type { MatchDetail } from "@/types/match-detail";
 
 /**
  * Query keys live in one place so invalidation stays consistent across
@@ -18,6 +19,7 @@ export const queryKeys = {
   sports: () => ["sports"] as const,
   tournaments: (params?: { sportCode?: string }) =>
     ["tournaments", params ?? {}] as const,
+  matchDetail: (id: number) => ["matchDetail", id] as const,
 };
 
 export function useMatches(params?: { sportCode?: string; status?: string }) {
@@ -38,5 +40,13 @@ export function useTournaments(params?: { sportCode?: string }) {
   return useQuery<TournamentDto[]>({
     queryKey: queryKeys.tournaments(params),
     queryFn: () => getMatchesService().getTournaments(params),
+  });
+}
+
+export function useMatchDetail(matchId: number) {
+  return useQuery<MatchDetail | null>({
+    queryKey: queryKeys.matchDetail(matchId),
+    queryFn: () => getMatchesService().getMatchDetail(matchId),
+    enabled: Number.isFinite(matchId) && matchId > 0,
   });
 }

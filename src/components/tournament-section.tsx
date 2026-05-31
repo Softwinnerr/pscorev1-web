@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Trophy } from "lucide-react";
 import type { MatchResponse, TournamentDto } from "@/types/models";
 import { MatchCard } from "./match-card";
@@ -35,7 +36,16 @@ export function TournamentSection({
             key={m.id ?? i}
             className={i > 0 ? "border-t border-divider" : undefined}
           >
-            <MatchCard match={m} />
+            {m.id != null ? (
+              <Link
+                href={`/matches/${m.id}`}
+                className="block transition-colors hover:bg-chip/60"
+              >
+                <MatchCard match={m} />
+              </Link>
+            ) : (
+              <MatchCard match={m} />
+            )}
           </li>
         ))}
       </ul>

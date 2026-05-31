@@ -3,6 +3,7 @@ import type {
   SportResponse,
   TournamentDto,
 } from "@/types/models";
+import type { MatchDetail } from "@/types/match-detail";
 
 /**
  * Contract every matches service must implement — both the [MockMatchesService]
@@ -19,4 +20,7 @@ export interface IMatchesService {
   getSports(): Promise<SportResponse[]>;
 
   getTournaments(params?: { sportCode?: string }): Promise<TournamentDto[]>;
+
+  /** Returns null when the match is not found. */
+  getMatchDetail(matchId: number): Promise<MatchDetail | null>;
 }
