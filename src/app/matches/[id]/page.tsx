@@ -5,7 +5,7 @@ import { Frown } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { AsyncStateView } from "@/components/async-state-view";
 import { LeaguesSidebar } from "@/components/leagues-sidebar";
-import { RightRail } from "@/components/right-rail";
+import { PubRail } from "@/components/pub-rail";
 import { MatchHeader } from "@/components/match-detail/match-header";
 import { ApercuTab } from "@/components/match-detail/apercu-tab";
 import { CompositionsTab } from "@/components/match-detail/compositions-tab";
@@ -41,7 +41,7 @@ export default function MatchDetailPage({
   return (
     <AppShell
       leftSidebar={<LeaguesSidebar />}
-      rightSidebar={<RightRail />}
+      rightSidebar={<PubRail />}
     >
       <AsyncStateView
         isLoading={isLoading}

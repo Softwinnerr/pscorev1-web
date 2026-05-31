@@ -5,7 +5,7 @@ import { Inbox } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { AsyncStateView } from "@/components/async-state-view";
 import { LeaguesSidebar } from "@/components/leagues-sidebar";
-import { RightRail } from "@/components/right-rail";
+import { PubRail } from "@/components/pub-rail";
 import { SportFilter } from "@/components/sport-filter";
 import { TournamentSection } from "@/components/tournament-section";
 import { groupByTournament } from "@/lib/match-grouping";
@@ -27,27 +27,24 @@ export default function HomePage() {
   return (
     <AppShell
       leftSidebar={<LeaguesSidebar />}
-      rightSidebar={<RightRail />}
-    >
-      {/* Page header — title + filter chips. On desktop the brand title
-          lives in the sticky TopNav, so we only need the section heading
-          + tagline here. */}
-      <div className="px-4 md:px-0">
-        <header className="pt-6 pb-2 md:pt-0">
-          <h1 className="font-display text-[32px] leading-none text-foreground md:hidden">
-            1<span className="text-live-red">er</span>score
-          </h1>
-          <p className="mt-1 text-[15px] text-text-secondary md:text-[16px]">
-            Les matchs du jour
-          </p>
-        </header>
-
+      rightSidebar={<PubRail />}
+      topRow={
         <SportFilter
           sports={sportsQuery.data ?? []}
           selected={sportCode}
           onChange={setSportCode}
         />
-      </div>
+      }
+    >
+      {/* Mobile-only brand title — desktop users get it in the TopNav. */}
+      <header className="px-4 pt-4 pb-2 md:hidden">
+        <h1 className="font-display text-[32px] leading-none text-foreground">
+          1<span className="text-live-red">er</span>score
+        </h1>
+        <p className="mt-1 text-[15px] text-text-secondary">
+          Les matchs du jour
+        </p>
+      </header>
 
       <AsyncStateView
         isLoading={matchesQuery.isLoading}
