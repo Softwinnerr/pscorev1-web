@@ -91,28 +91,30 @@ function ScoreBlock({ detail }: { detail: MatchDetail }) {
   const away = match.scoreAwayTeam ?? 0;
 
   if (isLive(match)) {
+    // Score-clock-score on a single row, mirrors the Flutter
+    // `_LiveScoreRow` layout: the live timer sits between the two
+    // digits, painted red, while each score dims when it isn't the
+    // current leader.
     return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              "font-display text-[44px] leading-none",
-              home >= away ? "text-foreground" : "text-text-muted",
-            )}
-          >
-            {home}
-          </span>
-          <span
-            className={cn(
-              "font-display text-[44px] leading-none",
-              away >= home ? "text-foreground" : "text-text-muted",
-            )}
-          >
-            {away}
-          </span>
-        </div>
-        <span className="font-display text-[18px] font-bold text-live-red">
+      <div className="flex items-baseline justify-center gap-4">
+        <span
+          className={cn(
+            "font-display text-[44px] leading-none",
+            home >= away ? "text-foreground" : "text-text-muted",
+          )}
+        >
+          {home}
+        </span>
+        <span className="font-display text-[18px] font-bold leading-none text-live-red">
           {match.currentMinute ?? "LIVE"}
+        </span>
+        <span
+          className={cn(
+            "font-display text-[44px] leading-none",
+            away >= home ? "text-foreground" : "text-text-muted",
+          )}
+        >
+          {away}
         </span>
       </div>
     );
@@ -120,32 +122,31 @@ function ScoreBlock({ detail }: { detail: MatchDetail }) {
 
   if (isFinished(match)) {
     return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              "font-display text-[44px] leading-none",
-              home >= away ? "text-foreground" : "text-text-muted",
-            )}
-          >
-            {home}
-          </span>
-          <span
-            className={cn(
-              "font-display text-[44px] leading-none",
-              away >= home ? "text-foreground" : "text-text-muted",
-            )}
-          >
-            {away}
-          </span>
-        </div>
+      <div className="flex items-baseline justify-center gap-4">
+        <span
+          className={cn(
+            "font-display text-[44px] leading-none",
+            home >= away ? "text-foreground" : "text-text-muted",
+          )}
+        >
+          {home}
+        </span>
         <span className="text-[13px] font-semibold text-text-secondary">
           Terminé
+        </span>
+        <span
+          className={cn(
+            "font-display text-[44px] leading-none",
+            away >= home ? "text-foreground" : "text-text-muted",
+          )}
+        >
+          {away}
         </span>
       </div>
     );
   }
 
+  // SCHEDULED — no score yet, just the kick-off time.
   return (
     <div className="flex flex-col items-center">
       <span className="text-[14px] text-foreground">
