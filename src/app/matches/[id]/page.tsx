@@ -64,10 +64,16 @@ export default function MatchDetailPage({
                    variant relies on a custom Tailwind variant declared in
                    globals.css ; we keep this override as a safety belt. */}
             <Tabs defaultValue="apercu" className="flex-col gap-6">
+              {/* `flex-wrap` lets the pills break to a second row on
+                  very narrow screens instead of clipping. We deliberately
+                  avoid `overflow-x-auto` here — it would also promote
+                  `overflow-y` to auto, which surfaced a phantom vertical
+                  scrollbar whenever the active focus ring nudged a pixel
+                  past the row's bounds. */}
               <TabsList
                 className={`
-                  h-auto bg-transparent gap-2 overflow-x-auto flex w-full
-                  justify-center rounded-none p-0
+                  h-auto w-full bg-transparent rounded-none p-0
+                  flex flex-wrap justify-center gap-2
                 `}
               >
                 <PillTrigger value="apercu">Aperçu</PillTrigger>
