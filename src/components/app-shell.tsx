@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { BottomNav } from "./bottom-nav";
+import { Footer } from "./footer";
 import { TopNav } from "./top-nav";
 
 interface AppShellProps {
@@ -78,6 +79,13 @@ export function AppShell({
             </aside>
           )}
         </div>
+      </div>
+
+      {/* Hide the marketing footer on mobile — the floating bottom nav
+          already covers the bottom of the viewport and the footer
+          links are reachable via the dedicated pages anyway. */}
+      <div className="hidden md:block">
+        <Footer />
       </div>
 
       <BottomNav />
