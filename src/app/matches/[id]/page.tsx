@@ -53,17 +53,16 @@ export default function MatchDetailPage({
         emptyIcon={Frown}
       >
         {data && (
-          <div className="flex flex-col gap-6 px-4 py-4 md:px-0 md:py-0">
+          <div className="flex flex-col gap-3 px-4 py-4 md:px-0 md:py-0">
             {/* 1. Match summary card (score + teams + competition). */}
             <MatchHeader detail={data} />
 
             {/* 2. Tabs row — centred between the header card and the
-                   active tab's content. Scrolls horizontally on narrow
-                   widths so all four pills stay reachable. `flex-col` is
-                   set explicitly because shadcn's `data-horizontal:flex-col`
-                   variant relies on a custom Tailwind variant declared in
+                   active tab's content. `flex-col` is set explicitly
+                   because shadcn's `data-horizontal:flex-col` variant
+                   relies on a custom Tailwind variant declared in
                    globals.css ; we keep this override as a safety belt. */}
-            <Tabs defaultValue="apercu" className="flex-col gap-6">
+            <Tabs defaultValue="apercu" className="flex-col gap-3">
               {/* `flex-wrap` lets the pills break to a second row on
                   very narrow screens instead of clipping. We deliberately
                   avoid `overflow-x-auto` here — it would also promote
