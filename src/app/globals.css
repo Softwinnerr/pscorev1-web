@@ -11,7 +11,11 @@
  */
 @custom-variant data-horizontal (&[data-orientation="horizontal"]);
 @custom-variant data-vertical (&[data-orientation="vertical"]);
-@custom-variant data-active (&[data-state="active"]);
+/* Base UI sets a boolean `data-active` attribute on the active tab / item,
+ * not `data-state="active"` (that's Radix' convention). We match the
+ * boolean attribute so shadcn's `data-active:` classes (and our own
+ * overrides) actually fire when an item is selected. */
+@custom-variant data-active (&[data-active]);
 
 /* ------------------------------------------------------------------ */
 /* Design tokens — direct port of the Flutter `AppPalette` constants. */

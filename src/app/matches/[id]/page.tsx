@@ -114,9 +114,10 @@ function PillTrigger({
     <TabsTrigger
       value={value}
       className={`
-        rounded-pill bg-chip px-4 py-2 text-[14px] font-bold text-foreground
-        data-[state=active]:bg-primary data-[state=active]:text-primary-foreground
-        whitespace-nowrap shadow-none
+        rounded-pill bg-card px-5 py-2.5 text-[14px] font-bold text-foreground
+        whitespace-nowrap shadow-none border border-chip-border
+        data-active:bg-primary data-active:text-primary-foreground
+        data-active:border-primary
       `}
     >
       {children}
